@@ -421,8 +421,8 @@ function App() {
   const treeCardDownloadName = finalData ? `${finalData.result.name}-tree-card.svg` : "tree-card.svg";
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(234,244,230,0.95),rgba(246,248,242,0.98),white)] text-zinc-800">
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-10">
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(234,244,230,0.95),rgba(246,248,242,0.98),white)] text-zinc-800">
+      <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
           <Card className="rounded-3xl border-0 bg-white/80 shadow-lg shadow-zinc-200/50 backdrop-blur">
             <CardHeader>
@@ -483,8 +483,8 @@ function App() {
               </div>
               {!started && (
                 <div className="pt-2">
-                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="先输入你的名字（可选）" className="mb-3 rounded-2xl bg-white" />
-                  <Button onClick={() => setStarted(true)} className="h-11 w-full rounded-2xl text-base">开始测试</Button>
+                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="先输入你的名字（可选）" className="mb-3 rounded-2xl bg-white text-lg md:text-xl" />
+                  <Button onClick={() => setStarted(true)} className="h-12 w-full rounded-2xl text-lg md:h-14 md:text-xl">开始测试</Button>
                 </div>
               )}
             </CardContent>
@@ -498,18 +498,18 @@ function App() {
                 <CardHeader>
                   <div className="mb-3 flex items-center justify-between gap-3">
                     <div>
-                      <CardTitle className="text-2xl">第 {current + 1} / {QUESTIONS.length} 题</CardTitle>
-                      <CardDescription className="mt-1 text-sm">按第一直觉选就好。</CardDescription>
+                      <CardTitle className="text-3xl md:text-4xl">第 {current + 1} / {QUESTIONS.length} 题</CardTitle>
+                      <CardDescription className="mt-1 text-base md:text-lg">按第一直觉选就好。</CardDescription>
                     </div>
                     <Badge className="rounded-full px-3 py-1">进度 {Math.round(progress)}%</Badge>
                   </div>
                   <Progress value={progress} className="h-2" />
                 </CardHeader>
                 <CardContent>
-                  <h2 className="mb-6 text-2xl font-semibold leading-9">{QUESTIONS[current].text}</h2>
+                  <h2 className="mb-6 text-3xl font-semibold leading-10 md:text-4xl">{QUESTIONS[current].text}</h2>
                   <div className="grid gap-4">
                     {QUESTIONS[current].options.map((op, idx) => (
-                      <motion.button key={idx} whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }} onClick={() => handleAnswer(idx)} className="rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-4 text-left text-base transition hover:border-zinc-300 hover:bg-zinc-100">
+                      <motion.button key={idx} whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }} onClick={() => handleAnswer(idx)} className="rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-5 text-left text-lg transition hover:border-zinc-300 hover:bg-zinc-100 md:text-xl">
                         {op.text}
                       </motion.button>
                     ))}
@@ -534,13 +534,20 @@ function App() {
                     <Badge variant="secondary" className="rounded-full px-3 py-1 text-sm">{dimensionLabel("RB", finalData.scores.RB)}</Badge>
                   </div>
 
-                  <div className="mb-4 text-sm text-emerald-700">{name ? `${name}，你的树人格结果是` : "你的树人格结果是"}</div>
+                  <motion.div
+                    className="mb-4 text-base font-medium text-emerald-700 md:text-lg"
+                    initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                  >
+                    {name ? `${name}，你的树人格结果是` : "你的树人格结果是"}
+                  </motion.div>
                   <div className="flex flex-col items-center">
                     <motion.button
                       whileHover={{ scale: 1.04, y: -2 }}
                       whileTap={{ scale: 0.97 }}
-                      animate={hugging ? { scale: [1, 1.1, 1.04], boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 0 18px rgba(16,185,129,0.14)", "0 0 0 rgba(16,185,129,0)"] } : {}}
-                      transition={{ duration: 0.7 }}
+                      animate={hugging ? { scale: [1, 1.14, 1.03], rotate: [0, -8, 8, -6, 6, 0], x: [0, -9, 9, -7, 7, 0], boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 0 24px rgba(16,185,129,0.18)", "0 0 0 rgba(16,185,129,0)"] } : {}}
+                      transition={{ duration: 0.9, ease: "easeInOut" }}
                       onClick={() => {
                         setHugging(true);
                         setTimeout(() => setHugging(false), 900);
@@ -591,7 +598,8 @@ function App() {
                   {hugging && (
                     <motion.div
                       initial={{ opacity: 0, y: 14, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      animate={{ opacity: 1, y: 0, scale: [1, 1.12, 1] }}
+                      transition={{ duration: 0.55, ease: "easeOut" }}
                       className="mt-5 rounded-3xl bg-emerald-100 px-6 py-5 text-center text-base font-semibold text-emerald-800 shadow-lg shadow-emerald-200/70 md:text-lg"
                     >
                       你被抱住了🌳
@@ -600,26 +608,30 @@ function App() {
                   )}
 
                   <div className="mt-8 flex flex-wrap gap-3">
-                    <Button className="rounded-2xl" onClick={() => navigator?.clipboard?.writeText?.(shareText)}>
-                      <Share2 className="mr-2 h-4 w-4" /> 复制结果文案
-                    </Button>
-                    <Button
-                      className="rounded-2xl bg-[#E8F5E1] text-[#3F6E4B] hover:bg-[#DDEFD4]"
-                      onClick={() => {
-                        try {
-                          const url = getTreeCardDataUrl(finalData, name);
-                          setTreeCardUrl(url);
-                        } catch (error) {
-                          const text = `🌳 我是一棵「${finalData.result.name}」
+                    <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}>
+                      <Button className="rounded-2xl" onClick={() => navigator?.clipboard?.writeText?.(shareText)}>
+                        <Share2 className="mr-2 h-4 w-4" /> 复制结果文案
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}>
+                      <Button
+                        className="rounded-2xl bg-[#E8F5E1] text-[#3F6E4B] hover:bg-[#DDEFD4]"
+                        onClick={() => {
+                          try {
+                            const url = getTreeCardDataUrl(finalData, name);
+                            setTreeCardUrl(url);
+                          } catch (error) {
+                            const text = `🌳 我是一棵「${finalData.result.name}」
 ${finalData.result.title}
 来测测你是哪棵树 →`;
-                          navigator?.clipboard?.writeText?.(text);
-                          alert('树卡片生成失败，已改为复制分享文案。');
-                        }
-                      }}
-                    >
-                      <Download className="mr-2 h-4 w-4" /> 生成我的树卡片
-                    </Button>
+                            navigator?.clipboard?.writeText?.(text);
+                            alert('树卡片生成失败，已改为复制分享文案。');
+                          }
+                        }}
+                      >
+                        <Download className="mr-2 h-4 w-4" /> 生成我的树卡片
+                      </Button>
+                    </motion.div>
                     <Button variant="outline" className="rounded-2xl" onClick={restart}>
                       <RotateCcw className="mr-2 h-4 w-4" /> 再测一次
                     </Button>
